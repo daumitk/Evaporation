@@ -10,6 +10,7 @@ Copyright (c) 2010 MIT. All rights reserved.
 
 import sys
 import os
+import pdb
 
 import numpy
 
@@ -203,10 +204,10 @@ if __name__ == '__main__':
 	main()
 
 compounds = CompoundsDatabase('compounds.csv')
-undecane=compounds['undecane']
+propyleneglycol=compounds['propyleneglycol']
 
-print "Vapor pressure of pure undecane at 300 K is ", undecane.getPureComponentVaporPressure(300)
-print "and its Enthlapy of vaporization at 300 K is",undecane.getEnthalpyOfVaporization(300)
+print "Vapor pressure of pure propyleneglycol at 300 K is ", propyleneglycol.getPureComponentVaporPressure(300)
+print "and its Enthlapy of vaporization at 300 K is",propyleneglycol.getEnthalpyOfVaporization(300)
 
 # this would be the full list in a random order:
 #list_of_compounds = compounds.values()
@@ -216,14 +217,17 @@ print "and its Enthlapy of vaporization at 300 K is",undecane.getEnthalpyOfVapor
 
 initial_amounts_all = {}                        # holds all initial amounts (for all experiments)
 #initial_amounts_file = 'initial_amounts.csv'                       # initial amounts filename
-initial_amounts_file = 'InitialAmounts.txt'
+initial_amounts_file = 'initial_amounts.txt'
 for x in open(initial_amounts_file):            # for every line in the file, get the initial amounts
         y = x.rstrip().split('\t')
         if 'acetophenone' in x or 'exp' in x:
                 list_of_compounds = [compounds[name] for name in y[1:]]
                 print list_of_compounds
                 continue
-        z = [float(i) for i in y]
+        try:
+                z = [float(i) for i in y]
+        except:
+                pdb.set_trace()
         initial_amounts_all[z[0]] = z[1:]
 initial_amounts = numpy.array(initial_amounts_all[1])        # 1st experiment is [1], 2nd [2]
 #print initial_amounts
